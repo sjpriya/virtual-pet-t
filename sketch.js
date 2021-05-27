@@ -5,6 +5,11 @@
 //5. How to update values in database?
 
 
+// Story - virtual pet 
+// when fed with milk
+// sadDog changes to happyDog 
+// milk stock reduces by 1
+// last feed time is updated
 
 var dog,sadDog,happyDog, database;
 var foodS,foodStock;
@@ -19,19 +24,20 @@ happyDog=loadImage("happy dog.png");
 
 function setup() {
   //database=firebase.database();
-  createCanvas(700,500);
+  createCanvas(1000,400);
 
   foodObj = new Food();
 
-  foodStock=database.ref('Food');
-  foodStock.on("value",readStock);
+  // create listener foodStock to call readStock function
+  //foodStock=database.ref('Food');
+  //foodStock.on("value",readStock);
   
-  dog=createSprite(650,200,150,150);
+  dog=createSprite(800,200,150,150);
   dog.addImage(sadDog);
   dog.scale=0.15;
   
   feed=createButton("Feed the dog");
-  feed.position(400,95);
+  feed.position(700,95);
   feed.mousePressed(feedDog);
 
   addFood=createButton("Add Food");
@@ -44,10 +50,10 @@ function draw() {
   background(46,139,87);
   foodObj.display();
 
-  fedTime=database.ref('FeedTime');
-  fedTime.on("value",function(data){
-    lastFed=data.val();
-  });
+  //fedTime=database.ref('FeedTime');
+  //fedTime.on("value",function(data){
+  //  lastFed=data.val();
+  //});
  
   fill(255,255,254);
   textSize(15);
@@ -64,9 +70,9 @@ function draw() {
 
 //function to read food Stock
 function readStock(data){
-  
-
-
+  // read value from database
+  //foodS=data.val();
+  foodObj.updateFoodStock(foodS);
 }
 
 
@@ -74,10 +80,11 @@ function readStock(data){
 function feedDog(){
   dog.addImage(happyDog);
   
-  if(foodObj.getFoodStock()<= 0){
-    foodObj.updateFoodStock(foodObj.getFoodStock()*0);
+  var food_stock_val = foodObj.getFoodStock();
+  if(food_stock_val <= 0){
+      foodObj.updateFoodStock(food_stock_val *0);
   }else{
-    foodObj.updateFoodStock(foodObj.getFoodStock()-1);
+      foodObj.updateFoodStock(food_stock_val -1);
   }
   
   database.ref('/').update({
@@ -88,7 +95,8 @@ function feedDog(){
 
 //function to add food in stock
 function addFoods(){
-  
-
-
+  foodS++;
+ // database.ref('/').update({
+ //   Food:foodS
+ // });
 }
