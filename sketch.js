@@ -1,3 +1,11 @@
+//1. Create realtime database for virtual pet to track 2 things - Food and FeedTime
+//2. Add project settings in your project code
+//3. What is firebase.database() function used for? 
+//4. How to read value from database? 
+//5. How to update values in database?
+
+
+
 var dog,sadDog,happyDog, database;
 var foodS,foodStock;
 var fedTime,lastFed;
@@ -15,8 +23,8 @@ function setup() {
 
   foodObj = new Food();
 
-  //foodStock=database.ref('Food');
-  //foodStock.on("value",readStock);
+  foodStock=database.ref('Food');
+  foodStock.on("value",readStock);
   
   dog=createSprite(650,200,150,150);
   dog.addImage(sadDog);
